@@ -56,6 +56,13 @@ const App: React.FC = () => {
     setShowAbout((prev) => !prev); // 切换弹窗显示状态
   };
 
+  const handleOutsideClick = (event: React.MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (target.id === "about-overlay") {
+      setShowAbout(false); // 点击外部关闭弹窗
+    }
+  };
+
   useEffect(() => {
     return () => {
       if (intervalId) clearInterval(intervalId);
@@ -106,17 +113,22 @@ const App: React.FC = () => {
 
       {/* About 弹窗 */}
       {showAbout && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div
+          id="about-overlay" // 添加 ID 以便检测点击
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          onClick={handleOutsideClick} // 绑定点击事件
+        >
           <div className="bg-white p-5 rounded-lg shadow-lg">
             <h2 className="text-xl font-bold mb-2">About This Project</h2>
             <p className="mb-2">
-              This is a simple random name picker application.
+              This is a project that helps my English teacher to randomly name
+              names.
             </p>
             <p className="mb-2">Author: zeroicey (happpy)</p>
             <p className="mb-2">
               GitHub:{" "}
               <a
-                href="https://github.com/random_picker"
+                href="https://github.com/zeroicey/random_picker"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600"
@@ -124,12 +136,6 @@ const App: React.FC = () => {
                 zeroicey/random_picker
               </a>
             </p>
-            <button
-              onClick={toggleAbout}
-              className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700"
-            >
-              Close
-            </button>
           </div>
         </div>
       )}
