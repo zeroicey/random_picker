@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import About from "./components/About.tsx";
+import Alert from "./components/Alert.tsx";
 import * as XLSX from "xlsx";
 
 interface FileData {
@@ -35,6 +37,11 @@ const App: React.FC = () => {
     }, 100);
 
     setIntervalId(id);
+
+    // 设置三秒后自动停止
+    setTimeout(() => {
+      stopRandomPick();
+    }, 2500);
   };
 
   const stopRandomPick = () => {
@@ -187,62 +194,17 @@ const App: React.FC = () => {
           {isPicking ? selectedName : resultName}
         </span>
         <button
-          onClick={isPicking ? stopRandomPick : startRandomPick}
-          className="bg-blue-600 text-white p-4 rounded-lg mt-4 hover:bg-blue-700 transition duration-300"
+          onClick={startRandomPick}
+          className={`bg-blue-600 text-white p-4 rounded-lg mt-4 hover:bg-blue-700 transition duration-300${
+            isPicking ? " hidden" : ""
+          }`}
         >
-          {isPicking ? "Stop Picking" : "Start Picking"}
+          Start Picking
         </button>
       </div>
 
-      {showAlert && (
-        <div
-          id="alert-overlay"
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-          onClick={handleOutsideClick}
-        >
-          <div className="bg-white p-5 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-2">No Names Found</h2>
-            <p className="mb-2">Please import names from an Excel file.</p>
-          </div>
-        </div>
-      )}
-
-      {showAbout && (
-        <div
-          id="about-overlay"
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-          onClick={handleOutsideClick}
-        >
-          <div className="bg-white p-5 rounded-lg shadow-lg max-w-md">
-            <h2 className="text-xl font-bold mb-2">About This Project 🎉</h2>
-            <p className="mb-2">
-              The <strong>Random Name Picker</strong> is a web application
-              designed to assist educators in randomly selecting names from a
-              list.
-              <br />
-              <hr />
-              This project was created to help my English teacher randomly call
-              on students during class, making activities more engaging and
-              efficient. 📚✨
-            </p>
-            <h3 className="font-semibold mt-4">Author: 👤</h3>
-            <p className="mb-2">zeroicey (happpy)</p>
-            <h3 className="font-semibold">GitHub Repository: 🌐</h3>
-            <p>
-              Explore the source code and contribute on{" "}
-              <a
-                href="https://github.com/zeroicey/random_picker"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600"
-              >
-                GitHub
-              </a>
-              . 🛠️
-            </p>
-          </div>
-        </div>
-      )}
+      <Alert showAlert={showAlert} handleOutsideClick={handleOutsideClick} />
+      <About showAbout={showAbout} handleOutsideClick={handleOutsideClick} />
     </div>
   );
 };
